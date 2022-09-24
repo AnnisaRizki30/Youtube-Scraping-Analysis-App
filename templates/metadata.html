@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container mt-5 mb-0">
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 mt-lg-0 mt-md-0 mt-sm-0">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Input or paste Youtube URL to extract the Youtube Metadata :</h5>
+          <form method="POST" action="/scrape-metadata-single">
+            <div class="form-row mt-4 justify-content-md-center">
+              <div class="col-lg-12 mb-3">
+                <input type="text" name="raw_url" class="form-control" id="inputUrl" placeholder="Input or Paste your link here">
+              </div>
+            </div>
+            <div class="w3-center">
+              <a href="{{url_for('index')}}" class="w3-btn w3-blue-grey" type ="submit" name="action" value="clear">Clear</a>
+              <button class="w3-btn w3-blue" type="submit" value="scraping-metadata-url" onclick="$('#loading-url').show();">Scraping Metadata</button>
+            </div>
+            <div class="w3-center">
+              <div id="loading-url" style="display:none;"><img src="{{ url_for('static', filename='images/loading-buffering.gif') }}" alt="" /></div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Upload your file here to extract the Youtube Metadata :</h5>
+          <form class="mt-4" method="POST" action="/scrape-metadata-multi" enctype = "multipart/form-data">
+            <input type = "file" name = "file" />
+            <br><br>
+            <div class="w3-center">
+              <button class="w3-btn w3-blue-grey" type="reset" value="reset">Clear</button>
+              <button class="w3-btn w3-blue" type="submit" value="scraping-metadata" onclick="$('#loading-file').show();">Scraping Metadata</button>
+            </div>
+          </form>
+          <div class="w3-center">
+            <div id="loading-file" style="display:none;"><img src="{{ url_for('static', filename='images/loading-buffering.gif') }}" alt="" /></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if url_video and title and date_published and channel_name and genre and thumbnail_url and subscribers and likes_num and views_count and duration and tags and description %}
+<div class="container result p-3 mb-3 mt-5">
+  <table class="table table-light mb-0" id="table">
+    <tbody style="overflow-x: auto;">
+        <tr>
+          <td class="col1">Title</td>
+          <td class="col2"><a href="{{ url_video }}">{{ title }}</a></td>
+        </tr>
+        <tr>
+          <td>Published date</td>
+          <td>{{ date_published }}</td>
+        </tr>
+        <tr>
+          <td>Channel Name</td>
+          <td>{{ channel_name }}</td>
+        </tr>
+        <tr>
+          <td>Genre</td>
+          <td>{{ genre }}</td>
+      </tr>
+        <tr>
+          <td>Thumbnail Url</td>
+          <td><img id="crop" src="{{ thumbnail_url }}"></td>
+      </tr>
+        <tr>
+          <td>Subscribers Count</td>
+          <td>{{ subscribers }}</td>
+        </tr>
+        <tr>
+          <td>Likes Count</td>
+          <td>{{ likes_num }}</td>
+        </tr>
+        <tr>
+          <td>Views Count</td>
+          <td>{{ views_count }}</td>
+        </tr>
+        <tr>
+          <td>Duration</td>
+          <td>{{ duration }}</td>
+        </tr>
+        <tr>
+          <td>Tags</td>
+          <td>{{ tags }}</td>
+        </tr>
+        <tr>
+          <td>Description</td>
+          <td>{{ description }}</td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+{% endif %}
+<br><br>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script>
+  $('table').on('scroll', function() {
+  $("#" + this.id + " > *").width($(this).width() + $(this).scrollLeft());
+});
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "comment.html" %}
+{% block content %}
+
+<div class="container table-responsive p-3 mb-3 mt-3">
+  <table class="table table-light mb-0" id="table">
+    <thead class="table-dark">
+      <tr>
+        {% for col in column_names %}
+        <th> 
+          {{col}}
+        </th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in row_data %}
+      <tr>
+        {% for col, row_ in zip(column_names, row) %}
+        <td>{{row_}}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<br><br>
+<div class="w3-container w3-center">
+  <a href="/download-comments" class="w3-btn w3-blue w3-button w3-padding ">Save To CSV</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script>
+  $('table').on('scroll', function() {
+  $("#" + this.id + " > *").width($(this).width() + $(this).scrollLeft());
+});
+</script>
+
+{% endblock %}

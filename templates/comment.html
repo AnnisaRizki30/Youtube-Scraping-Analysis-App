@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container mt-5 mb-0">
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 mt-lg-0 mt-md-0 mt-sm-0">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Input or paste Youtube URL to extract the Youtube Comments :</h5>
+          <form method="POST" action="/scrape-comments-single">
+            <div class="form-row mt-4 justify-content-md-center">
+              <div class="col-lg-12">
+                <input type="text" name="raw_url" class="form-control" id="inputUrl" placeholder="Input or Paste your link here">
+              </div>
+              <div class="col-lg-12 mt-2">
+                <input type="number" name="number_comments" class="form-control" id="inputNumber" placeholder="Number of Comments">
+              </div>
+            </div>
+            <br>
+            <div class="w3-center">
+              <a href="{{url_for('comments')}}" class="w3-btn w3-blue-grey" type="reset" value="reset">Clear</a>
+              <button class="w3-btn w3-blue" type="submit" value="scraping-comment" onclick="$('#loading-url').show();">Scraping Comments</button>
+            </div>
+            <div class="w3-center">
+              <div id="loading-url" style="display:none;"><img src="{{ url_for('static', filename='images/loading-buffering.gif') }}" alt="" /></div>
+            </div>  
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Upload your file here to extract the Youtube Comments :</h5>
+          <form method="POST" action="/scrape-comments-multi" enctype = "multipart/form-data">
+            <div class="form-row mt-4 justify-content-md-center">
+              <div class="col-lg-12">
+                  <input type = "file" name = "file" />
+              </div>
+              <div class="col-lg-12 mt-3">
+                <input type="number" name="number_comments" class="form-control" id="inputNumber" placeholder="Number of Comments">
+              </div>
+            </div>
+            <br>
+            <div class="w3-center">
+              <a href="{{url_for('comments')}}" class="w3-btn w3-blue-grey" type="reset" value="reset">Clear</a>
+              <button class="w3-btn w3-blue" type="submit" value="scraping-comment" onclick="$('#loading-file').show();">Scraping Comments</button>
+            </div>
+            <div class="w3-center">
+              <div id="loading-file" style="display:none;"><img src="{{ url_for('static', filename='images/loading-buffering.gif') }}" alt="" /></div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% if result %}
+<div class="col-lg-6 mx-auto result p-3 mb-3 mt-5 custom-scrollbar-css p-2">
+  {% for row in result %}
+  <div class="card mb-4">
+    <div class="card-body p-3">
+      <img src="{{row['photo']}}" alt="profile icon" width="50">
+      <p class="comments__name">{{row['author']}}<a href="#">{{row['time']}}</a></p>
+      <p class="comments__comment">{{row['text']}}</p>
+      <div class="likes">
+          <a href="#">
+              <img src="{{ url_for('static', filename='images/like.jpg') }}" alt="like">
+          </a>
+          <p class="comments__text">{{row['votes']}}</p>
+          <a href="#">
+              <img src="{{ url_for('static', filename='images/dislike.jpg') }}" alt="dislike">
+          </a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script>
+  $(function() {
+  /* Rounded Dots Dark */
+  $("#content-1").mCustomScrollbar({
+    theme: "rounded-dots-dark"
+  });
+
+  /* Rounded Dark */
+  $("#content-2").mCustomScrollbar({
+    theme: "rounded-dark"
+  });
+
+  /* Inset Dark */
+  $("#content-3").mCustomScrollbar({
+    theme: "inset-3-dark"
+  });
+
+  /* 3d Dark */
+  $("#content-4").mCustomScrollbar({
+    theme: "3d-dark"
+  });
+
+  /* Dark Thin */
+  $("#content-5").mCustomScrollbar({
+    theme: "dark-thin"
+  });
+});
+</script>
+
+{% endblock %}
